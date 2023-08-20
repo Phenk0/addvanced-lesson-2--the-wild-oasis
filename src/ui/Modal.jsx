@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { HiOutlineXMark } from 'react-icons/hi2';
+import { createPortal } from 'react-dom';
+import { cloneElement, createContext, useContext, useState } from 'react';
+import { useOutsideClick } from '../hooks/useOutsideClick.js';
 
 const StyledModal = styled.div`
   position: fixed;
@@ -48,3 +52,54 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+
+const ModalContext = createContext({});
+function Modal({ children }) {
+  const [activeModalName, setActiveModalName] = useState('');
+
+  const closeModal = () => setActiveModalName('');
+  const openModal = setActiveModalName;
+  return (
+    <ModalContext.Provider value={{ activeModalName, openModal, closeModal }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+function Trigger({ children, modalName }) {
+  const { openModal } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => openModal(modalName) });
+}
+
+function Window({ children, modalName }) {
+  const { activeModalName, closeModal } = useContext(ModalContext);
+  const ref = useOutsideClick(closeModal);
+  if (modalName !== activeModalName) return null;
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  };
+
+  return createPortal(
+    <Overlay>
+      <StyledModal
+        onKeyDown={handleKeyDown}
+        role="dialog"
+        tabIndex={-1}
+        ref={ref}
+      >
+        <Button onClick={closeModal} aria-label="Close Modal">
+          <HiOutlineXMark />
+        </Button>
+        {cloneElement(children, { onCloseModal: closeModal })}
+      </StyledModal>
+    </Overlay>,
+    document.body
+  );
+}
+
+Modal.Trigger = Trigger;
+Modal.Window = Window;
+export default Modal;

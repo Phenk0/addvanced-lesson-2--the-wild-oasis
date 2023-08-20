@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
-import Button from '../../ui/Button.jsx';
 import Row from '../../ui/Row.jsx';
 import CreateCabinForm from './CreateCabinForm.jsx';
 
@@ -13,18 +11,10 @@ import {
   HiOutlineTrash
 } from 'react-icons/hi2';
 import useCreateCabin from './useCreateCabin.js';
-
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+import Modal from '../../ui/Modal.jsx';
+import ConfirmDelete from '../../ui/ConfirmDelete.jsx';
+import Table from '../../ui/Table.jsx';
+import Menus from '../../ui/Menus.jsx';
 
 const Img = styled.img`
   display: block;
@@ -54,7 +44,6 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const [isFormVisible, setIsFormVisible] = useState(false);
   const { deleteCabin, isDeleting } = useDeleteCabin();
   const { createCabin, isCreating } = useCreateCabin();
 
@@ -79,41 +68,55 @@ function CabinRow({ cabin }) {
     });
   }
   return (
-    <>
-      <TableRow role="row">
-        <Img src={image} />
-        <Cabin>{name}</Cabin>
-        <div>Fits up to {maxCapacity} guests</div>
-        <Price>{formatCurrency(regularPrice)}</Price>
-        {discount ? (
-          <Discount>{formatCurrency(discount)}</Discount>
-        ) : (
-          <span>&mdash;</span>
-        )}
+    <Table.Row>
+      <Img src={image} />
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {maxCapacity} guests</div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      {discount ? (
+        <Discount>{formatCurrency(discount)}</Discount>
+      ) : (
+        <span>&mdash;</span>
+      )}
 
-        <Row type="horizontal">
-          <Button $size="small" onClick={handleDuplicate} disabled={isCreating}>
-            <HiOutlineSquare2Stack size="20" color="white" />
-          </Button>
-          <Button
-            $variation="secondary"
-            $size="small"
-            onClick={() => setIsFormVisible((visible) => !visible)}
-          >
-            <HiOutlinePencil size="20" color="black" />
-          </Button>
-          <Button
-            onClick={() => deleteCabin(cabinId)}
-            disabled={isDeleting}
-            $variation="danger"
-            $size="small"
-          >
-            <HiOutlineTrash size="20" color="white" />
-          </Button>
-        </Row>
-      </TableRow>
-      {isFormVisible && <CreateCabinForm cabinToEdit={cabin} />}
-    </>
+      <Modal>
+        <Menus.Menu>
+          <Menus.Toggle menusName={cabinId} />
+          <Menus.List menusName={cabinId}>
+            <Menus.Button
+              icon={<HiOutlineSquare2Stack color="var(--color-brand-600)" />}
+              onClick={handleDuplicate}
+            >
+              Duplicate
+            </Menus.Button>
+
+            <Modal.Trigger modalName="edit-cabin">
+              <Menus.Button icon={<HiOutlinePencil />}>Edit</Menus.Button>
+            </Modal.Trigger>
+
+            <Modal.Trigger modalName="delete-cabin">
+              <Menus.Button
+                icon={<HiOutlineTrash color="var(--color-red-700)" />}
+              >
+                Delete
+              </Menus.Button>
+            </Modal.Trigger>
+          </Menus.List>
+
+          {/*HINT: ModalWindows must be outside the MenusList to correctly trigger!*/}
+          <Modal.Window modalName="edit-cabin">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.Window>
+          <Modal.Window modalName="delete-cabin">
+            <ConfirmDelete
+              onConfirm={() => deleteCabin(cabinId)}
+              resourceName={`<${cabin.name}>`}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Menus.Menu>
+      </Modal>
+    </Table.Row>
   );
 }
 

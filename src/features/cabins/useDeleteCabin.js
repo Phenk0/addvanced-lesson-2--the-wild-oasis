@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteCabin as deleteCabinApi } from '../../services/apiCabins.js';
 import toast from 'react-hot-toast';
 
-function useDeleteCabin() {
+export function useDeleteCabin() {
   const queryClient = useQueryClient();
 
   const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
@@ -18,5 +18,3 @@ function useDeleteCabin() {
   });
   return { deleteCabin, isDeleting };
 }
-
-export default useDeleteCabin;

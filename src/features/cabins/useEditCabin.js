@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createEditCabin } from '../../services/apiCabins.js';
 import toast from 'react-hot-toast';
 
-function UseEditCabin() {
+export function useEditCabin() {
   const queryClient = useQueryClient();
 
   const { isLoading: isEditing, mutate: editCabin } = useMutation({
@@ -17,5 +17,3 @@ function UseEditCabin() {
   });
   return { editCabin, isEditing };
 }
-
-export default UseEditCabin;

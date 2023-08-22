@@ -9,8 +9,8 @@ import Button from '../../ui/Button.jsx';
 import FileInput from '../../ui/FileInput.jsx';
 import Textarea from '../../ui/Textarea.jsx';
 
-import useCreateCabin from './useCreateCabin.js';
-import useEditCabin from './useEditCabin.js';
+import { useCreateCabin } from './useCreateCabin.js';
+import { useEditCabin } from './useEditCabin.js';
 
 function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { createCabin, isCreating } = useCreateCabin();

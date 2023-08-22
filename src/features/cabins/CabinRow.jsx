@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 
-import Row from '../../ui/Row.jsx';
 import CreateCabinForm from './CreateCabinForm.jsx';
 
-import useDeleteCabin from './useDeleteCabin.js';
+import { useDeleteCabin } from './useDeleteCabin.js';
 import { formatCurrency } from '../../utils/helpers.js';
 import {
   HiOutlinePencil,
   HiOutlineSquare2Stack,
   HiOutlineTrash
 } from 'react-icons/hi2';
-import useCreateCabin from './useCreateCabin.js';
+import { useCreateCabin } from './useCreateCabin.js';
 import Modal from '../../ui/Modal.jsx';
 import ConfirmDelete from '../../ui/ConfirmDelete.jsx';
 import Table from '../../ui/Table.jsx';
@@ -45,7 +44,7 @@ const Discount = styled.div`
 
 function CabinRow({ cabin }) {
   const { deleteCabin, isDeleting } = useDeleteCabin();
-  const { createCabin, isCreating } = useCreateCabin();
+  const { createCabin } = useCreateCabin();
 
   const {
     image,

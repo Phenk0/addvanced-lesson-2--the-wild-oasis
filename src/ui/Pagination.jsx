@@ -19,14 +19,14 @@ const P = styled.p`
   }
 `;
 
-const Buttons = styled.div`
+const ButtonsContainer = styled.div`
   display: flex;
   gap: 0.6rem;
 `;
 
 const PaginationButton = styled.button`
   background-color: ${(props) =>
-    props.active ? ' var(--color-brand-600)' : 'var(--color-grey-50)'};
+    props?.active ? ' var(--color-brand-600)' : 'var(--color-grey-50)'};
   color: ${(props) => (props.active ? ' var(--color-brand-50)' : 'inherit')};
   border: none;
   border-radius: var(--border-radius-sm);
@@ -76,6 +76,7 @@ function Pagination({ count }) {
     searchParams.set('page', prev.toString());
     setSearchParams(searchParams);
   }
+
   if (pageCount <= 1) return null;
 
   return (
@@ -87,7 +88,7 @@ function Pagination({ count }) {
         </span>{' '}
         of <span>{count}</span> results
       </P>
-      <Buttons>
+      <ButtonsContainer>
         <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
           <HiChevronLeft />
           <span>Previous</span>
@@ -100,7 +101,7 @@ function Pagination({ count }) {
           <span>Next</span>
           <HiChevronRight />
         </PaginationButton>
-      </Buttons>
+      </ButtonsContainer>
     </StyledPagination>
   );
 }

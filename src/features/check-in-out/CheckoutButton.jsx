@@ -1,6 +1,6 @@
 import Button from '../../ui/Button.jsx';
 
-function CheckoutButton({ bookingId }) {
+function CheckoutButton() {
   return <Button $size="small">Check out</Button>;
 }
 

@@ -15,7 +15,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import Booking from './pages/Booking.jsx';
 import CheckinBooking from './features/check-in-out/CheckinBooking.jsx';
-import ProtectedRoute from './ui/ ProtectedRoute.jsx';
+import ProtectedRoute from './ui/ProtectedRoute.jsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {

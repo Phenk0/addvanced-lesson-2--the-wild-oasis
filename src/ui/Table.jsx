@@ -60,7 +60,7 @@ const Empty = styled.p`
   margin: 2.4rem;
 `;
 
-const TableContext = createContext({});
+const TableContext = createContext();
 function Table({ columns, children }) {
   return (
     <>

@@ -12,7 +12,7 @@ const StyledUserAvatar = styled.div`
 
 const Avatar = styled.img`
   display: block;
-  width: 4rem;
+  //width: 4rem;
   width: 3.6rem;
   aspect-ratio: 1;
   object-fit: cover;
@@ -23,7 +23,9 @@ const Avatar = styled.img`
 
 function UserAvatar() {
   const { user } = useUser();
-  console.log('user start', user);
+
+  if (!user) return null;
+
   const { fullName, avatar } = user.user_metadata;
 
   return (

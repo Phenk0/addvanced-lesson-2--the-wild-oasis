@@ -92,6 +92,8 @@ function Toggle({ menusName }) {
   const { activeMenusName, closeMenus, openMenus, setMenuPosition } =
     useContext(MenusContext);
   function handleClick(event) {
+    event.stopPropagation();
+
     const rect = event.target.closest('button').getBoundingClientRect();
     activeMenusName === '' || activeMenusName !== menusName
       ? openMenus(menusName)
@@ -110,7 +112,8 @@ function Toggle({ menusName }) {
 function List({ menusName, children }) {
   const { activeMenusName, activeMenuPosition, closeMenus } =
     useContext(MenusContext);
-  const ref = useOutsideClick(closeMenus);
+  const ref = useOutsideClick(closeMenus, false);
+
   if (activeMenusName !== menusName) return null;
   return createPortal(
     <StyledList ref={ref} $position={activeMenuPosition}>
